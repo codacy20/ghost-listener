@@ -35,12 +35,22 @@ export class PostService {
         let myFirstPromise = new Promise((resolve, reject) => {
             fs.readFile(path.join(__dirname, '../assets/sample.json'), 'utf8', (error, data) => {
                 if (data)
-                    resolve('yay')
+                    resolve(JSON.parse(data));
                 if (error)
                     reject('nay')
             });
         })
         return myFirstPromise;
+    }
+
+    async appendJsonFile(): Promise<any> {
+        const jsonFile: JSON = await this.getJsonFile();
+        let arr = [];
+        arr.push(jsonFile);
+        this.messages.forEach(element => {
+            arr.push(element);
+        });
+        return arr;
     }
 
     getMessage(): IPost[] {

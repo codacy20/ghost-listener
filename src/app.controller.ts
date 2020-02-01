@@ -31,4 +31,10 @@ export class AppController {
   async getJSON(): Promise<any> {
     return await this.postService.getJsonFile();
   }
+
+  @Get('append')
+  async appendJSON(): Promise<any> {
+    return await this.postService.appendJsonFile();
+  }
+
 }
