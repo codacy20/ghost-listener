@@ -26,4 +26,9 @@ export class AppController {
     const response = this.postService.getMessage();
     return response;
   }
+
+  @Get('json')
+  async getJSON(): Promise<any> {
+    return await this.postService.getJsonFile();
+  }
 }
