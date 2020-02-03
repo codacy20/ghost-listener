@@ -8,10 +8,9 @@ import * as path from 'path';
 export class PostService {
 
     constructor() { }
-    messages: IPost[] = [];
+    message: IPost;
     ResponseMessage: string = '';
     ResponseStatus: number = 1;
-    jsonFile: any;
 
     async create(message: IPost): Promise<SampleResponse> {
         const messageTemp = new IPost(message);
@@ -22,7 +21,7 @@ export class PostService {
             } else {
                 this.ResponseMessage = 'validation succeed';
                 this.ResponseStatus = 202;
-                this.messages.push(messageTemp);
+                this.message = (messageTemp);
             }
         });
         return {
@@ -35,7 +34,7 @@ export class PostService {
         let myFirstPromise = new Promise((resolve, reject) => {
             fs.readFile(path.join(__dirname, '../assets/sample.json'), 'utf8', (error, data) => {
                 if (data)
-                    resolve(JSON.parse(data));
+                    resolve(JSON.parse(data))
                 if (error)
                     reject('nay')
             });
@@ -44,16 +43,30 @@ export class PostService {
     }
 
     async appendJsonFile(): Promise<any> {
-        const jsonFile: JSON = await this.getJsonFile();
         let arr = [];
-        arr.push(jsonFile);
-        this.messages.forEach(element => {
-            arr.push(element);
-        });
-        return arr;
+        const key = `${this.message.slug}`.toString();
+        const messageObj = { [key]: this.message };
+        const objArr = await this.getJsonFile();
+        // const newObj = { ...messageObj, obj };
+
+        if (Array.isArray(objArr)) {
+            objArr.push(messageObj);
+        }
+
+        // this.jsonFile.push('yo: ' + messageObj);
+        // this.messages.forEach(element => {
+        //     arr.push(element);
+        // });
+        // this.messages = [];
+        let myFirstPromise = new Promise((resolve, reject) => {
+            fs.writeFile(path.join(__dirname, '../assets/sample.json'), JSON.stringify(objArr), (data) => {
+                resolve(data);
+            });
+        })
+        return await myFirstPromise;
     }
 
-    getMessage(): IPost[] {
-        return this.messages;
+    getMessage(): IPost {
+        return this.message;
     }
 }

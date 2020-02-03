@@ -20,6 +20,7 @@ export class IPost {
         this.updated_at = new Date(message.updated_at);
         this.published_at = new Date(message.published_at);
         this.status = message.status;
+        this.slug = message.slug;
     }
 
     @IsNotEmpty()
@@ -46,6 +47,9 @@ export class IPost {
     
     @IsString()
     status: string;
+
+    @IsString()
+    slug: string;
 
     authors: IAuthors[];
 }

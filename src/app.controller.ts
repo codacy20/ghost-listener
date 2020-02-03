@@ -21,7 +21,7 @@ export class AppController {
   }
 
   @Get('message')
-  getMessages(): IPost[] {
+  getMessages(): IPost {
     // console.log(message.post.current.id)
     const response = this.postService.getMessage();
     return response;
