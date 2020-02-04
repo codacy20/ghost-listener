@@ -11,7 +11,7 @@ export interface IPostAbstract {
 
 export class IPost {
 
-    constructor(message: IPost){
+    constructor(message: IPost) {
         this.title = message.title;
         this.id = message.id;
         this.plaintext = message.plaintext;
@@ -35,16 +35,16 @@ export class IPost {
     plaintext: string;
 
     html: HTMLElement;
-    
+
     @IsDate()
     created_at: Date;
-    
+
     @IsDate()
     updated_at: Date;
-    
+
     @IsDate()
     published_at: Date;
-    
+
     @IsString()
     status: string;
 
@@ -63,4 +63,5 @@ export class IAuthors {
 export class SampleResponse {
     status: number;
     message: string;
+    payload?: IPost;
 }

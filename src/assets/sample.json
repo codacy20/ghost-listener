@@ -1,3 +1,17 @@
 {
-    "key": "value"
+    "login": {
+        "emailAddress": "Enter email address",
+        "password": "Enter password",
+        "login": "Log in",
+        "forgotpwd": "Forgot password?",
+        "troubleLogin": "Trouble logging in?",
+        "wrongDetails": "Invalid username and password combination!",
+        "loading": "Loading",
+        "message-title": "Session expired",
+        "message-body": "You have been logged off due to inactivity. Log in again to continue.",
+        "loginErrorMessage1": "The combination of username and password",
+        "loginErrorMessage2": "you have entered is incorrect.",
+        "validEmailAddress": "Invalid email address",
+        "validPhoneNumber": "Invalid phone number"
+    }
 }

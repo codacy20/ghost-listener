@@ -46,27 +46,34 @@ export class PostService {
         let arr = [];
         const key = `${this.message.slug}`.toString();
         const messageObj = { [key]: this.message };
-        const objArr = await this.getJsonFile();
-        // const newObj = { ...messageObj, obj };
+        const obj = await this.getJsonFile();
+        obj[key] = messageObj;
 
-        if (Array.isArray(objArr)) {
-            objArr.push(messageObj);
-        }
-
-        // this.jsonFile.push('yo: ' + messageObj);
-        // this.messages.forEach(element => {
-        //     arr.push(element);
-        // });
-        // this.messages = [];
         let myFirstPromise = new Promise((resolve, reject) => {
-            fs.writeFile(path.join(__dirname, '../assets/sample.json'), JSON.stringify(objArr), (data) => {
-                resolve(data);
+            fs.writeFile(path.join(__dirname, '../assets/sample.json'), JSON.stringify(obj), (err) => {
+                if (err) reject(err);
+                else resolve(obj);
             });
         })
-        return await myFirstPromise;
+        myFirstPromise.then(()=>{
+            this.message = null;
+        })
+        return myFirstPromise;
     }
 
-    getMessage(): IPost {
-        return this.message;
+    getMessage(): SampleResponse {
+        if (this.message) {
+            return {
+                message: '1 result found',
+                status: 201,
+                payload: this.message
+            }
+        }
+        else
+            return {
+                message: 'no result was found',
+                status: 404,
+                payload: null
+            }
     }
 }

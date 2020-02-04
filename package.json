@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "copy-assets": "cp -rv ./src/assets dist/assets",
+    "copy-assets": "rm -rf dist/assets && cp -rf ./src/assets dist/assets",
     "start:dev": "npm run copy-assets && nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
