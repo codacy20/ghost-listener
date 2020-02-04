@@ -8,7 +8,7 @@ import * as path from 'path';
 export class PostService {
 
     constructor() { }
-    message: IPost;
+    messages: IPost[] = [];
     ResponseMessage: string = '';
     ResponseStatus: number = 1;
 
@@ -21,12 +21,13 @@ export class PostService {
             } else {
                 this.ResponseMessage = 'validation succeed';
                 this.ResponseStatus = 202;
-                this.message = (messageTemp);
+                this.messages.push(messageTemp);
             }
         });
         return {
             message: this.ResponseMessage,
-            status: this.ResponseStatus
+            status: this.ResponseStatus,
+            payload: [this.messages[this.messages.length - 1]]
         };
     }
 
@@ -42,31 +43,41 @@ export class PostService {
         return myFirstPromise;
     }
 
-    async appendJsonFile(): Promise<any> {
-        let arr = [];
-        const key = `${this.message.slug}`.toString();
-        const messageObj = { [key]: this.message };
-        const obj = await this.getJsonFile();
-        obj[key] = messageObj;
-
-        let myFirstPromise = new Promise((resolve, reject) => {
-            fs.writeFile(path.join(__dirname, '../assets/sample.json'), JSON.stringify(obj), (err) => {
-                if (err) reject(err);
-                else resolve(obj);
+    async appendJsonFile(): Promise<SampleResponse> {
+        if (this.messages.length > 0) {
+            this.messages.forEach(async (message: IPost) => {
+                const key = `${message.slug}`.toString();
+                const obj = await this.getJsonFile();
+                obj[key] = message;
+                let myFirstPromise = new Promise((resolve, reject) => {
+                    fs.writeFile(path.join(__dirname, '../assets/sample.json'), JSON.stringify(obj), (err) => {
+                        if (err) reject(err);
+                        else resolve(obj);
+                    });
+                })
+                myFirstPromise.then(() => {
+                    this.messages = [];
+                })
             });
-        })
-        myFirstPromise.then(()=>{
-            this.message = null;
-        })
-        return myFirstPromise;
+            return {
+                message: 'Appended',
+                status: 202,
+                payload: this.messages
+            }
+        }
+        else
+            return {
+                message: 'Failed',
+                status: 500,
+            };
     }
 
     getMessage(): SampleResponse {
-        if (this.message) {
+        if (this.messages.length > 0) {
             return {
-                message: '1 result found',
-                status: 201,
-                payload: this.message
+                message: this.messages.length + ' result found',
+                status: 202,
+                payload: this.messages
             }
         }
         else

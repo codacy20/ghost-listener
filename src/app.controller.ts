@@ -15,14 +15,12 @@ export class AppController {
 
   @Post('message')
   async create(@Body() message: IncomingMessage): Promise<SampleResponse> {
-    // console.log(message.post.current.id)
     const response = await this.postService.create(message.post.current);
     return response;
   }
 
   @Get('message')
   getMessages(): SampleResponse {
-    // console.log(message.post.current.id)
     const response = this.postService.getMessage();
     return response;
   }

@@ -63,5 +63,5 @@ export class IAuthors {
 export class SampleResponse {
     status: number;
     message: string;
-    payload?: IPost;
+    payload?: IPost[];
 }
